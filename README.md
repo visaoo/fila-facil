@@ -67,4 +67,4 @@ Serão adicionadas conforme os novos requisitos apresentados em aula.
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/visaoo/fila-facil
+git clone https://github.com/visaoo/fila-facil.git
