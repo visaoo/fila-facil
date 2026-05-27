@@ -10,17 +10,28 @@ interface Cliente {
 
 interface Props {
   clientes: Cliente[];
+  onChamarProximo: () => void;
+  chamando: boolean;
 }
 
-export default function FilaEspera({ clientes }: Props) {
+export default function FilaEspera({ clientes, onChamarProximo, chamando }: Props) {
   return (
     <div className="bg-white rounded-2xl shadow p-6">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">
-        Fila de Espera{" "}
-        <span className="text-sm font-normal text-gray-500">
-          ({clientes.length})
-        </span>
-      </h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold text-gray-800">
+          Fila de Espera{" "}
+          <span className="text-sm font-normal text-gray-500">
+            ({clientes.length})
+          </span>
+        </h2>
+        <button
+          onClick={onChamarProximo}
+          disabled={chamando || clientes.length === 0}
+          className="bg-green-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-50"
+        >
+          {chamando ? "Chamando..." : "Chamar Próximo"}
+        </button>
+      </div>
 
       {clientes.length === 0 ? (
         <p className="text-gray-400 text-sm text-center py-8">
