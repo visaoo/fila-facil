@@ -44,3 +44,25 @@ class Fila:
             elementos.append(atual.dado)
             atual = atual.proximo
         return elementos
+
+    def remover(self, identificador):
+        anterior = None
+        atual = self.inicio
+
+        while atual:
+            if atual.dado["id"] == identificador:
+                if anterior:
+                    anterior.proximo = atual.proximo
+                else:
+                    self.inicio = atual.proximo
+
+                if atual is self.fim:
+                    self.fim = anterior
+
+                self.tamanho -= 1
+                return atual.dado
+
+            anterior = atual
+            atual = atual.proximo
+
+        return None
