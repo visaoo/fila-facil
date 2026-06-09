@@ -30,3 +30,9 @@ class FilaPrioridade:
 
     def tamanho(self):
         return self.fila_prioritaria.tamanho + self.fila_normal.tamanho
+
+    def remover(self, identificador):
+        cliente = self.fila_prioritaria.remover(identificador)
+        if cliente:
+            return cliente
+        return self.fila_normal.remover(identificador)
