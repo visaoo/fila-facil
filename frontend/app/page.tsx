@@ -22,12 +22,18 @@ export default function Home() {
   const [finalizando, setFinalizando] = useState(false);
   const [cancelandoId, setCancelandoId] = useState<string | null>(null);
   const [erro, setErro] = useState("");
+  const [buscaHistorico, setBuscaHistorico] = useState("");
+  const [ordemHistorico, setOrdemHistorico] = useState<"asc" | "desc">("desc");
 
   const carregarDados = useCallback(async () => {
+    const params = new URLSearchParams();
+    if (buscaHistorico.trim()) params.set("busca", buscaHistorico.trim());
+    params.set("ordem", ordemHistorico);
+
     try {
       const [resFila, resHistorico] = await Promise.all([
         fetch(`${API_URL}/fila`),
-        fetch(`${API_URL}/historico`),
+        fetch(`${API_URL}/historico?${params.toString()}`),
       ]);
 
       if (!resFila.ok || !resHistorico.ok) {
@@ -46,7 +52,7 @@ export default function Home() {
     } catch {
       setErro("Não foi possível carregar os dados do servidor.");
     }
-  }, []);
+  }, [buscaHistorico, ordemHistorico]);
 
   async function chamarProximo() {
     setChamando(true);
@@ -146,6 +152,14 @@ export default function Home() {
     carregarDados();
   }, [carregarDados]);
 
+  function handleBuscaChange(valor: string) {
+    setBuscaHistorico(valor);
+  }
+
+  function handleOrdemChange(valor: "asc" | "desc") {
+    setOrdemHistorico(valor);
+  }
+
   return (
     <main className="min-h-screen bg-gray-100 p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
@@ -199,7 +213,13 @@ export default function Home() {
           />
         </div>
 
-        <HistoricoAtendimentos atendimentos={historico} />
+        <HistoricoAtendimentos
+          atendimentos={historico}
+          busca={buscaHistorico}
+          ordem={ordemHistorico}
+          onBuscaChange={handleBuscaChange}
+          onOrdemChange={handleOrdemChange}
+        />
       </div>
     </main>
   );
