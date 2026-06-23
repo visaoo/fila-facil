@@ -1,4 +1,4 @@
-# Etapa 1 Projeto — Fila Fácil
+# Fila Fácil
 
 ## Integrantes
 
@@ -11,60 +11,69 @@ Projeto 03 — Sistema de atendimento com fila de espera
 
 ## Sobre o projeto
 
-O projeto consiste no desenvolvimento de um sistema de atendimento com fila de espera, semelhante ao funcionamento de uma clínica, banco ou setor de suporte.
+Sistema de atendimento com fila de espera, semelhante ao funcionamento de uma clínica, banco ou setor de suporte.
 
-O sistema permitirá cadastrar clientes, adicionar clientes à fila, chamar o próximo cliente respeitando prioridade, cancelar atendimentos e registrar os atendimentos concluídos em um histórico.
+O sistema permite cadastrar clientes, adicioná-los à fila respeitando prioridade, chamar o próximo cliente, cancelar atendimentos, registrar o histórico de atendimentos concluídos, e agora também **buscar** e **ordenar** o histórico por data e hora.
 
-O backend será desenvolvido obrigatoriamente em Python, contendo a implementação das estruturas de dados estudadas na disciplina.
+## Estruturas de dados implementadas
 
-## Estruturas de dados previstas
+| Estrutura | Uso |
+|---|---|
+| Fila com prioridade | Controla a ordem de atendimento (clientes prioritários na frente) |
+| Lista encadeada | Armazena o histórico de atendimentos concluídos |
 
-### Fila
+## Tecnologias
 
-Será utilizada para controlar a ordem dos clientes na fila de espera.
+- **Backend:** Python 3 + FastAPI + Uvicorn
+- **Frontend:** Next.js 14 + Tailwind CSS
 
-Clientes do tipo normal serão atendidos seguindo a ordem de chegada, respeitando o conceito FIFO — First In, First Out.
+## Funcionalidades
 
-### Fila com prioridade
+- Cadastrar cliente com nome e tipo (normal ou prioritário)
+- Adicionar cliente à fila de espera
+- Chamar próximo cliente respeitando prioridade
+- Concluir ou cancelar atendimento em andamento
+- Remover cliente da fila antes de ser atendido
+- Registrar atendimentos concluídos no histórico
+- **[Etapa 4] Buscar cliente no histórico por nome**
+- **[Etapa 4] Ordenar histórico por data/hora (mais recente ou mais antigo)**
 
-Será utilizada para garantir que clientes preferenciais sejam chamados antes dos clientes normais.
+## Como executar localmente
 
-### Lista encadeada
+### Pré-requisitos
 
-Será utilizada para armazenar o histórico de atendimentos concluídos.
-
-Cada atendimento realizado será registrado como um nó da lista, permitindo percorrer o histórico posteriormente.
-
-### Tabela hash
-
-Será implementada em uma etapa futura para permitir a localização rápida de clientes pelo número da senha.
-
-### Ordenação e busca
-
-Serão adicionadas conforme os novos requisitos apresentados em aula.
-
-## Tecnologias utilizadas
+- Python 3.10+
+- Node.js 18+
 
 ### Backend
 
-- Python + FastAPI
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
 
-### Front-end
+A API ficará disponível em `http://localhost:8000`.  
+Documentação interativa: `http://localhost:8000/docs`
 
-- Next.js + Tailwind CSS
-
-## Funcionalidades principais
-
-- Cadastrar cliente com nome e tipo de atendimento
-- Adicionar cliente à fila de espera
-- Chamar próximo cliente respeitando prioridade
-- Exibir status atual da fila
-- Registrar atendimentos concluídos em uma lista de histórico
-- Cancelar atendimento e remover cliente da fila
-
-## Instruções para execução do projeto
-
-1. Clone o repositório:
+### Frontend
 
 ```bash
-git clone https://github.com/visaoo/fila-facil.git
+cd frontend
+npm install
+npm run dev
+```
+
+A interface ficará disponível em `http://localhost:3000`.
+
+## Endpoints da API
+
+| Método | Rota | Descrição |
+|---|---|---|
+| GET | `/fila` | Lista clientes na fila com posição |
+| POST | `/clientes` | Cadastra novo cliente na fila |
+| POST | `/fila/proximo` | Chama o próximo cliente |
+| DELETE | `/fila/{id}` | Remove cliente da fila |
+| POST | `/atendimentos/atual/concluir` | Conclui atendimento em andamento |
+| DELETE | `/atendimentos/atual` | Cancela atendimento em andamento |
+| GET | `/historico?busca=nome&ordem=asc\|desc` | Lista histórico com busca e ordenação |
