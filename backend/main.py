@@ -145,9 +145,19 @@ def cancelar_atendimento_atual():
 
 
 @app.get("/historico")
-def listar_historico():
+def listar_historico(busca: str = "", ordem: str = "desc"):
     atendimentos = historico.listar()
+
+    if busca.strip():
+        atendimentos = [
+            a for a in atendimentos
+            if busca.strip().lower() in a["nome"].lower()
+        ]
+
+    reverse = ordem != "asc"
+    atendimentos = sorted(atendimentos, key=lambda a: a["concluido_em"], reverse=reverse)
+
     return {
-        "historico": list(reversed(atendimentos)),
-        "total": historico.tamanho,
+        "historico": atendimentos,
+        "total": len(atendimentos),
     }
